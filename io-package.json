@@ -1,62 +1,256 @@
 {
     "common": {
         "name": "tradfri",
-        "version": "1.0.0",
+        "version": "2.6.3",
         "news": {
-            "1.0.0": {
-                "en": "This is stable enough for a 1.x version.",
-                "de": "Der Adapter ist stabil genug für ein 1.x-Version."
+            "2.6.3": {
+                "en": "Bugfix: Changed the role of RGB states to `level.color.rgb`",
+                "de": "Bugfix: Die Rolle der RGB-Zustände wurde in \"level.color.rgb\" geändert",
+                "ru": "Исправлено: изменена роль состояний RGB на `level.color.rgb`",
+                "pt": "Correção de bug: Alterada a função dos estados RGB para `level.color.rgb`",
+                "nl": "Bugfix: de rol van RGB-staten gewijzigd in `level.color.rgb`",
+                "fr": "Bugfix: Changé le rôle des états RVB en `level.color.rgb`",
+                "it": "Bugfix: modificato il ruolo degli stati RGB in `level.color.rgb`",
+                "es": "Corrección de errores: se cambió la función de los estados RGB a `level.color.rgb`",
+                "pl": "Bugfix: Zmieniono rolę stanów RGB na `level.color.rgb`",
+                "zh-cn": "错误修正：将RGB状态的角色更改为`level.color.rgb`"
             },
-            "0.6.0": {
-                "en": "Moved tradfri-related code into its own library.",
-                "de": "Tradfri-Code in eigene Library ausgelagert."
+            "2.6.2": {
+                "en": "* Bugfix: The unhandled error handler should now correctly log the error even if `adapter` is not defined",
+                "de": "* Bugfix: Der nicht behandelte Fehlerbehandler sollte den Fehler jetzt korrekt protokollieren, auch wenn \"Adapter\" nicht definiert ist",
+                "ru": "* Исправление: необработанный обработчик ошибок теперь должен корректно регистрировать ошибку, даже если `адаптер` не определен",
+                "pt": "* Correção de erro: O manipulador de erros não manipulados agora deve registrar corretamente o erro, mesmo que o `adaptador` não esteja definido",
+                "nl": "* Bugfix: de niet-verwerkte foutafhandelaar moet de fout nu correct registreren, zelfs als `adapter` niet is gedefinieerd",
+                "fr": "* Bugfix: le gestionnaire d'erreurs non géré devrait maintenant correctement enregistrer l'erreur même si `adaptateur` n'est pas défini",
+                "it": "* Bugfix: il gestore degli errori non gestiti dovrebbe ora registrare correttamente l'errore anche se `adapter` non è definito",
+                "es": "* Corrección de errores: el controlador de errores no manejado ahora debe registrar correctamente el error incluso si no se ha definido `adaptador`",
+                "pl": "* Bugfix: Nieobsługiwany moduł obsługi błędów powinien teraz poprawnie rejestrować błąd, nawet jeśli `adapter 'nie jest zdefiniowany",
+                "zh-cn": "*修正：未处理的错误处理程序现在应该正确记录错误，即使未定义`adapter`"
             },
-            "0.5.5": {
-                "en": "Restored compatibility to Gateway version 1.2.42",
-                "de": "Kompatibilität zu Gateway-Version 1.2.42 wiederhergestellt"
+            "2.6.1": {
+                "en": "* Bugfix: Blinds would not always be stopped",
+                "de": "* Bugfix: Blinds würden nicht immer gestoppt",
+                "ru": "* Исправление: жалюзи не всегда останавливались",
+                "pt": "* Correção de erros: as cortinas nem sempre eram interrompidas",
+                "nl": "* Bugfix: blinds werden niet altijd gestopt",
+                "fr": "* Bugfix: les stores ne seraient pas toujours arrêtés",
+                "it": "* Bugfix: i blind non sarebbero sempre stati fermati",
+                "es": "* Corrección de errores: las persianas no siempre se detendrían",
+                "pl": "* Bugfix: Żaluzje nie zawsze były zatrzymywane",
+                "zh-cn": "*错误修正：百叶窗不会总是停止"
             },
-            "0.5.4": {
-                "en": "Support of virtual groups. Added icons for devices.",
-                "de": "Unterstützung virtueller Gruppen. Icons für Geräte hinzugefügt."
+            "2.6.0": {
+                "en": "* Support stopping blinds at their current position",
+                "de": "* Unterstützung beim Stoppen von Jalousien an ihrer aktuellen Position",
+                "ru": "* Поддержка остановки блайндов в их текущем положении",
+                "pt": "* Suporte para parar as cortinas na posição atual",
+                "nl": "* Ondersteuning voor het stoppen van jaloezieën op hun huidige positie",
+                "fr": "* Soutenir l'arrêt des stores à leur position actuelle",
+                "it": "* Supporta l'arresto dei bui nella loro posizione attuale",
+                "es": "* Soporte para detener las persianas en su posición actual",
+                "pl": "* Obsługa zatrzymywania żaluzji w ich bieżącej pozycji",
+                "zh-cn": "*支持将百叶窗停在当前位置"
             },
-            "0.4.5": {
-                "en": "Bugfixes",
-                "de": "Bugfixes"
+            "2.5.2": {
+                "en": "* Fix: Suppress log warnings for Symfonisk remotes",
+                "de": "* Korrektur: Unterdrückung von Protokollwarnungen für Symfonisk-Fernbedienungen",
+                "ru": "* Исправлено: Подавление предупреждений журнала для удаленных пользователей Symfonisk.",
+                "pt": "* Correção: suprimir avisos de log para controles remotos Symfonisk",
+                "nl": "* Oplossing: logboekwaarschuwingen onderdrukken voor Symfonisk-afstandsbedieningen",
+                "fr": "* Correction: supprimer les avertissements de journal pour les télécommandes Symfonisk",
+                "it": "* Correzione: sopprimere gli avvisi del registro per i telecomandi Symfonisk",
+                "es": "* Solución: elimine las advertencias de registro para los controles remotos Symfonisk",
+                "pl": "* Poprawka: Pomija ostrzeżenia dziennika dla pilotów Symfonisk",
+                "zh-cn": "*修复：抑制Symfonisk遥控器的日志警告"
             },
-            "0.4.4": {
-                "en": "Experimental support for RGB and lightbulbs with fixed color.",
-                "de": "Experimentelle Unterstützung für RGB und Lampen mit fester Farbtemperatur."
+            "2.5.1": {
+                "en": "Made it possible to operate plugs using virtual groups",
+                "de": "Ermöglicht den Betrieb von Steckern mit virtuellen Gruppen",
+                "ru": "Сделано возможным управлять пробками с помощью виртуальных групп",
+                "pt": "Tornou possível operar plugues usando grupos virtuais",
+                "nl": "Maakte het mogelijk om pluggen te bedienen met behulp van virtuele groepen",
+                "fr": "A rendu possible le fonctionnement des prises à l'aide de groupes virtuels",
+                "it": "Ha reso possibile il funzionamento delle spine tramite gruppi virtuali",
+                "es": "Hizo posible operar enchufes usando grupos virtuales",
+                "pl": "Umożliwiło obsługę wtyczek przy użyciu grup wirtualnych",
+                "zh-cn": "使使用虚拟组操作插头成为可能"
             },
-            "0.3.4": {
-                "en": "Disabled automatic restart on connection loss.",
-                "de": "Automatischen Neustart bei Verbindungsverlust deaktiviert."
+            "2.5.0": {
+                "en": "More device types are allowed in virtual groups",
+                "de": "Weitere Gerätetypen sind in virtuellen Gruppen zulässig",
+                "ru": "В виртуальных группах разрешено использовать больше типов устройств",
+                "pt": "Mais tipos de dispositivos são permitidos em grupos virtuais",
+                "nl": "Meer apparaattypen zijn toegestaan in virtuele groepen",
+                "fr": "Plus de types d'appareils sont autorisés dans les groupes virtuels",
+                "it": "Sono consentiti più tipi di dispositivi nei gruppi virtuali",
+                "es": "Se permiten más tipos de dispositivos en grupos virtuales",
+                "pl": "Więcej typów urządzeń jest dozwolonych w grupach wirtualnych",
+                "zh-cn": "虚拟组中允许更多设备类型"
             },
-            "0.3.3": {
-                "en": "Eliminated potential sources of infinite loops",
-                "de": "Potentielle Auslöser von Endlosschleifen eliminiert"
+            "2.4.7": {
+                "en": "Fixed small display issues with 3rd party bulbs",
+                "de": "Kleine Anzeigeprobleme mit Glühlampen von Drittanbietern wurden behoben",
+                "ru": "Исправлены небольшие проблемы с отображением ламп сторонних производителей",
+                "pt": "Corrigidos pequenos problemas de exibição com lâmpadas de terceiros",
+                "nl": "Kleine weergaveproblemen met lampen van derden opgelost",
+                "fr": "Correction de petits problèmes d'affichage avec les ampoules de tiers",
+                "it": "Risolti piccoli problemi di visualizzazione con lampadine di terze parti",
+                "es": "Se corrigieron pequeños problemas de visualización con bombillas de terceros",
+                "pl": "Naprawiono małe problemy z wyświetlaniem w żarówkach innych firm",
+                "zh-cn": "修复了第三方灯泡的小型显示问题"
             },
-            "0.3.0": {
-                "en": "Support of groups and scenes, improved connection handling, internal improvements.",
-                "de": "Unterstützung von Gruppen und Szenen, verbesserte Verbindungsverwaltung, interne Verbesserungen."
+            "2.4.6": {
+                "en": "Group states for blinds are now synchronized correctly",
+                "de": "Gruppenstatus für Jalousien werden jetzt korrekt synchronisiert",
+                "ru": "Состояния группы для блайндов теперь правильно синхронизированы",
+                "pt": "Os estados do grupo para blinds agora estão sincronizados corretamente",
+                "nl": "Groepstoestanden voor blinds worden nu correct gesynchroniseerd",
+                "fr": "Les états de groupe pour les stores sont maintenant correctement synchronisés",
+                "it": "Gli stati di gruppo per i blind sono ora sincronizzati correttamente",
+                "es": "Los estados de grupo para persianas ahora se sincronizan correctamente",
+                "pl": "Stany grup dla blindów są teraz poprawnie synchronizowane",
+                "zh-cn": "百叶窗的组状态现在可以正确同步"
             },
-            "0.2.1": {
-                "en": "Removed git dependency, published to npm.",
-                "de": "Git-Abhängigkeit entfernt, auf npm veröffentlicht."
+            "2.4.5": {
+                "en": "Suppressed log warnings for motion sensors",
+                "de": "Logwarnungen für Bewegungssensoren unterdrückt",
+                "ru": "Подавленные предупреждения журнала для датчиков движения",
+                "pt": "Avisos de log suprimidos para sensores de movimento",
+                "nl": "Onderdrukte logwaarschuwingen voor bewegingssensoren",
+                "fr": "Alertes de journalisation supprimées pour les détecteurs de mouvement",
+                "it": "Avvisi di registro eliminati per i sensori di movimento",
+                "es": "Advertencias de registro suprimidas para sensores de movimiento",
+                "pl": "Ukryte ostrzeżenia dziennika dla czujników ruchu",
+                "zh-cn": "禁止运动传感器的日志警告"
             },
-            "0.1.3": {
-                "en": "Initial release without broken 3rd party libraries",
-                "de": "Initiale Version des Adapters ohne fehlerhafte Dritt-Software"
+            "2.4.4": {
+                "en": "Suppressed log warnings for slave remotes and signal repeaters",
+                "de": "Logwarnungen für Slave-Fernbedienungen und Signalwiederholer unterdrückt",
+                "ru": "Подавленные предупреждения журнала для ведомых пультов и ретрансляторов сигнала",
+                "pt": "Advertências de log suprimidas para controles remotos escravos e repetidores de sinal",
+                "nl": "Onderdrukte logwaarschuwingen voor slave-afstandsbedieningen en signaalrepeaters",
+                "fr": "Alertes de journalisation supprimées pour les télécommandes esclaves et les répéteurs de signaux",
+                "it": "Avvisi di registro eliminati per telecomandi slave e ripetitori di segnale",
+                "es": "Advertencias de registro suprimidas para controles remotos esclavos y repetidores de señal",
+                "pl": "Ukryte ostrzeżenia dziennika dla pilotów slave i repeaterów sygnałów",
+                "zh-cn": "从属遥控器和信号中继器的禁止日志警告"
+            },
+            "2.4.3": {
+                "en": "Fix: Operate blinds when states are changed",
+                "de": "Fix: Jalousien betätigen, wenn Zustände geändert werden",
+                "ru": "Исправлено: работа блайндов при смене состояний",
+                "pt": "Correção: operar blinds quando os estados são alterados",
+                "nl": "Oplossing: jaloezieën bedienen wanneer staten worden gewijzigd",
+                "fr": "Corrigé: Utiliser les stores quand les états sont changés",
+                "it": "Correzione: aziona i blind quando cambiano gli stati",
+                "es": "Solución: operar persianas cuando se cambian los estados",
+                "pl": "Poprawka: uruchamiaj żaluzje, gdy zmienia się stan",
+                "zh-cn": "修复：状态更改时操作百叶窗"
+            },
+            "2.4.2": {
+                "en": "Fix: also create objects for blinds",
+                "de": "Fix: Objekte für Jalousien werden nun korrekt erstellt",
+                "ru": "Исправлено: также создавать объекты для жалюзи",
+                "pt": "Correção: também cria objetos para blinds",
+                "nl": "Oplossing: maak ook objecten voor blinds",
+                "fr": "Correction: créer également des objets pour les stores",
+                "it": "Correzione: crea anche oggetti per persiane",
+                "es": "Solución: también crea objetos para persianas",
+                "pl": "Poprawka: twórz także obiekty dla żaluzji",
+                "zh-cn": "修复：还为百叶窗创建对象"
+            },
+            "2.4.0": {
+                "en": "Added support for blinds",
+                "de": "Unterstützung für Jalousien hinzugefügt",
+                "ru": "Добавлена поддержка жалюзи",
+                "pt": "Adicionado suporte para blinds",
+                "nl": "Ondersteuning toegevoegd voor blinds",
+                "fr": "Ajout du support pour les stores",
+                "it": "Aggiunto supporto per i bui",
+                "es": "Se agregó soporte para persianas",
+                "pl": "Dodano obsługę żaluzji",
+                "zh-cn": "增加了对百叶窗的支持"
+            },
+            "2.3.0": {
+                "en": "The gateway can now be discovered automatically",
+                "de": "Automatische Erkennung des Gateways hinzugefügt",
+                "ru": "Шлюз теперь может быть обнаружен автоматически",
+                "pt": "O gateway pode agora ser descobertos automaticamente",
+                "nl": "De gateway kan nu worden ontdekt automatisch",
+                "fr": "La passerelle peut maintenant être découvert automatiquement",
+                "it": "Il gateway può ora essere individuati automaticamente",
+                "es": "La puerta de enlace puede ahora ser descubiertos automáticamente",
+                "pl": "Brama może być wykryty automatycznie",
+                "zh-cn": "该网关，现在可以自动发现"
+            },
+            "2.2.0": {
+                "en": "Expose the battery percentage for devices with a battery",
+                "de": "Legen Sie den Batterieprozentsatz für Geräte mit Akku offen",
+                "ru": "Выставьте процент батареи для устройств с батареей",
+                "pt": "Exponha a porcentagem da bateria para dispositivos com bateria",
+                "nl": "Stel het batterijpercentage bloot voor apparaten met een batterij",
+                "fr": "Exposer le pourcentage de batterie pour les appareils dotés d'une batterie",
+                "it": "Esporre la percentuale della batteria per i dispositivi con una batteria",
+                "es": "Exponer el porcentaje de batería para dispositivos con batería.",
+                "pl": "Odsłonić procent baterii dla urządzeń z baterią",
+                "zh-cn": "显示带电池的设备的电池百分比"
+            },
+            "2.1.0": {
+                "en": "* Support for compact mode\n* Optimizations and fixes under the hood\n* When `node-aead-crypto` is not installed, display instructions on how to fix it",
+                "de": "* Unterstützung für den Kompaktmodus\n* Optimierungen und Korrekturen unter der Haube\n* Wenn `node-aead-crypto` nicht installiert ist, zeigen Sie Anweisungen zur Behebung an",
+                "ru": "* Поддержка компактного режима\n* Оптимизация и исправления под капотом\n* Когда `node-aead-crypto` не установлен, отобразите инструкции о том, как это исправить",
+                "pt": "* Suporte para o modo compacto\n* Otimizações e correções sob o capô\n* Quando o `node-aead-crypto` não está instalado, exibe instruções sobre como corrigi-lo",
+                "nl": "* Ondersteuning voor de compacte modus\n* Optimalisaties en oplossingen onder de motorkap\n* Wanneer `node-aead-crypto` niet is geïnstalleerd, geeft u instructies voor het oplossen ervan op",
+                "fr": "* Prise en charge du mode compact\n* Optimisations et corrections sous le capot\n* Lorsque `node-aead-crypto` n'est pas installé, affiche les instructions pour le corriger.",
+                "it": "* Supporto per la modalità compatta\n* Ottimizzazioni e correzioni sotto il cofano\n* Quando `node-aead-crypto` non è installato, visualizzare le istruzioni su come risolverlo",
+                "es": "* Soporte para modo compacto.\n* Optimizaciones y correcciones bajo el capó.\n* Cuando `node-aead-crypto` no está instalado, muestra instrucciones sobre cómo solucionarlo",
+                "pl": "* Wsparcie dla trybu kompaktowego\n* Optymalizacje i poprawki pod maską\n* Kiedy `node-aead-crypto` nie jest zainstalowany, wyświetl instrukcje, jak to naprawić",
+                "zh-cn": "*支持紧凑的模式\n*优化和修复盖下\n*当`节点-aead-加密`是没有安装，显示说明如何解决它"
+            },
+            "2.0.0": {
+                "en": "Switched to material design, dropped Admin v2 support.",
+                "de": "Zu material design gewechselt und Admin v2 Unterstützung gestrichen.",
+                "ru": "Перешли на материал конструкции, за админ поддержка V2.",
+                "pt": "Mudou para material de desenho, caiu de Administração v2 suporte.",
+                "nl": "Geschakeld-ontwerp van het materiaal, liet Admin v2 ondersteuning.",
+                "fr": "Passé à la conception de matériel, a chuté de l'Admin v2 de soutien.",
+                "it": "Commutato in material design, è sceso Admin v2 supporto.",
+                "es": "De conmutación para el diseño de materiales, cayó Administrador v2 apoyo.",
+                "pl": "Przeszli na materiał konstrukcji, za admin wsparcie V2.",
+                "zh-cn": "切换到的材料设计，下降了管理v2的支持。"
             }
         },
         "title": "IKEA Trådfri",
+        "titleLang": {
+            "de": "IKEA Trådfri",
+            "en": "IKEA Trådfri",
+            "es": "IKEA Trådfri",
+            "fr": "IKEA Trådfri",
+            "it": "IKEA Trådfri",
+            "nl": "IKEA Trådfri",
+            "pl": "IKEA Trådfri",
+            "pt": "IKEA Trådfri",
+            "ru": "IKEA Trådfri",
+            "zh-cn": "宜家Trådfri"
+        },
         "desc": {
             "en": "Communicates with IKEA Trådfri Gateway to control devices",
-            "de": "Kommuniziert mit IKEA Trådfri Gateway um Geräte zu steuern"
+            "de": "Kommuniziert mit IKEA Trådfri Gateway, um Geräte zu steuern",
+            "ru": "Общается с ИКЕА шлюз Trådfri для управления устройствами",
+            "pt": "Comunica-se com a IKEA Trådfri Gateway para dispositivos de controle de",
+            "nl": "Communiceert met de IKEA Trådfri Gateway om de apparatuur te bedienen",
+            "fr": "Communique avec IKEA Trådfri Passerelle de dispositifs de contrôle de la",
+            "it": "Comunica con IKEA Trådfri Gateway per dispositivi di controllo",
+            "es": "Se comunica con IKEA Trådfri Puerta de entrada a los dispositivos de control de",
+            "pl": "Komunikuje się z IKEA brama Trådfri do zarządzania urządzeniami",
+            "zh-cn": "与IKEA Trådfri网关，以控制设备"
         },
         "authors": [
             "AlCalzone <d.griesel@gmx.net>"
         ],
+        "license": "MIT",
         "platform": "Javascript/Node.js",
+        "main": "build/main.js",
         "mode": "daemon",
         "icon": "tradfri.png",
         "enabled": false,
@@ -68,14 +262,29 @@
         "readme": "https://github.com/AlCalzone/ioBroker.tradfri/blob/master/README.md",
         "loglevel": "info",
         "type": "lighting",
-        "messagebox": true
+        "messagebox": true,
+        "materialize": true,
+        "compact": true,
+        "dependencies": [
+            {
+                "js-controller": ">=1.4.2"
+            }
+        ]
     },
     "native": {
+        "discoverGateway": true,
         "host": "",
         "securityCode": "",
         "identity": "",
-        "psk": ""
+        "psk": "",
+        "preserveTransitionTime": false,
+        "roundToDigits": 2
     },
+    "protectedNative": [
+        "securityCode",
+        "identity",
+        "psk"
+    ],
     "objects": [],
     "instanceObjects": [
         {

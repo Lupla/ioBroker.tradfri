@@ -1,1 +1,2 @@
-export declare function onMessage(obj: any): Promise<void>;
+/// <reference types="iobroker" />
+export declare const onMessage: ioBroker.MessageHandler;

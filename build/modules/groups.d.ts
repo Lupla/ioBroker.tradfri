@@ -1,3 +1,4 @@
+/// <reference types="iobroker" />
 import { Accessory, Group } from "node-tradfri-client";
 import { VirtualGroup } from "../lib/virtual-group";
 export declare function extendVirtualGroup(group: VirtualGroup): void;
@@ -9,4 +10,4 @@ export declare function extendGroup(group: Group): void;
  */
 export declare function updateMultipleGroupStates(changedAccessory?: Accessory, changedStateId?: string): void;
 export declare function updateGroupStates(group: Group | VirtualGroup, changedStateId?: string): void;
-export declare function syncGroupsWithState(id: string, state: ioBroker.State): void;
+export declare function syncGroupsWithState(id: string, state: ioBroker.State | null | undefined): void;

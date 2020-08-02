@@ -1,15 +1,16 @@
-import { AccessoryTypes, TradfriError, TradfriErrorCodes } from "node-tradfri-client";
+import { entries } from "alcalzone-shared/objects";
+import { isArray } from "alcalzone-shared/typeguards";
+import { Accessory, AccessoryTypes } from "node-tradfri-client";
 import { Global as _ } from "../lib/global";
 import { calcGroupName } from "../lib/iobroker-objects";
-import { DictionaryLike, entries } from "../lib/object-polyfill";
 import { VirtualGroup } from "../lib/virtual-group";
 import { Device as SendToDevice, Group as SendToGroup } from "./communication";
 import { extendVirtualGroup, updateGroupStates } from "./groups";
 import { session as $ } from "./session";
 
-export async function onMessage(obj) {
+export const onMessage: ioBroker.MessageHandler = async (obj) => {
 	// responds to the adapter that sent the original message
-	function respond(response) {
+	function respond(response: string | {}) {
 		if (obj.callback) _.adapter.sendTo(obj.from, obj.command, response, obj.callback);
 	}
 	// some predefined responses so we only have to define them once
@@ -17,16 +18,15 @@ export async function onMessage(obj) {
 		ACK: { error: null },
 		OK: { error: null, result: "ok" },
 		ERROR_UNKNOWN_COMMAND: { error: "Unknown command!" },
-		MISSING_PARAMETER: (paramName) => {
+		MISSING_PARAMETER: (paramName: string) => {
 			return { error: 'missing parameter "' + paramName + '"!' };
 		},
 		COMMAND_RUNNING: { error: "command running" },
-		RESULT: (result) => ({ error: null, result }),
+		RESULT: (result: unknown) => ({ error: null, result }),
 		ERROR: (error: string) => ({ error }),
 	};
 	// make required parameters easier
-	function requireParams(...params: string[]) {
-		if (!(params && params.length)) return true;
+	function requireParams(...params: string[]): boolean {
 		for (const param of params) {
 			if (!(obj.message && obj.message.hasOwnProperty(param))) {
 				respond(responses.MISSING_PARAMETER(param));
@@ -94,13 +94,14 @@ export async function onMessage(obj) {
 
 				const group = $.virtualGroups[id];
 				// Update the device ids
-				if (params.deviceIDs != null && params.deviceIDs instanceof Array) {
-					group.deviceIDs = params.deviceIDs.map(d => parseInt(d, 10)).filter(d => !isNaN(d));
+				if (params.deviceIDs != null && isArray(params.deviceIDs)) {
+					group.deviceIDs = (params.deviceIDs as string[]).map(d => parseInt(d, 10)).filter(d => !isNaN(d));
 				}
 				// Change the name
 				if (typeof params.name === "string" && params.name.length > 0) {
 					group.name = params.name;
 				}
+
 				// save the changes
 				extendVirtualGroup(group);
 				updateGroupStates(group);
@@ -141,7 +142,7 @@ export async function onMessage(obj) {
 					return;
 				}
 
-				const ret: DictionaryLike<SendToGroup> = {};
+				const ret: Record<string, SendToGroup> = {};
 				if (groupType === "real" || groupType === "both") {
 					for (const [id, group] of entries($.groups)) {
 						ret[id] = {
@@ -156,8 +157,8 @@ export async function onMessage(obj) {
 					for (const [id, group] of entries($.virtualGroups)) {
 						ret[id] = {
 							id,
-							name: group.name,
-							deviceIDs: group.deviceIDs,
+							name: group.name || "Unbenannte Gruppe",
+							deviceIDs: group.deviceIDs || [],
 							type: "virtual",
 						};
 					}
@@ -170,23 +171,27 @@ export async function onMessage(obj) {
 			case "getDevices": { // get all devices defined on the gateway
 				// check the given params
 				const params = obj.message as any;
-				// group type must be "real", "virtual" or "both"
-				const deviceType = params.type || "lightbulb";
-				if (["lightbulb"].indexOf(deviceType) === -1) {
-					respond(responses.ERROR(`device type must be "lightbulb"`));
+				// device type must be "lightbulb", "plug" or "all"
+				const deviceType = params.type || "all";
+				const allowedDeviceTypes = ["lightbulb", "plug", "blind", "all"];
+				if (allowedDeviceTypes.indexOf(deviceType) === -1) {
+					respond(responses.ERROR(`device type must be one of ${allowedDeviceTypes.map(t => `"${t}"`).join(", ")}`));
 					return;
 				}
 
-				const ret: DictionaryLike<SendToDevice> = {};
-				if (deviceType === "lightbulb") {
-					const lightbulbs = entries($.devices).filter(([id, device]) => device.type === AccessoryTypes.lightbulb);
-					for (const [id, bulb] of lightbulbs) {
-						ret[id] = {
-							id,
-							name: bulb.name,
-							type: deviceType,
-						};
-					}
+				const ret: Record<string, SendToDevice> = {};
+				const predicate = ([, device]: [unknown, Accessory]) =>
+					deviceType === "all"
+						? allowedDeviceTypes.indexOf(AccessoryTypes[device.type]) > -1
+						: deviceType === AccessoryTypes[device.type];
+
+				const selectedDevices = entries($.devices).filter(predicate);
+				for (const [id, acc] of selectedDevices) {
+					ret[id] = {
+						id,
+						name: acc.name,
+						type: deviceType,
+					};
 				}
 
 				respond(responses.RESULT(ret));
@@ -206,7 +211,7 @@ export async function onMessage(obj) {
 
 				const device = $.devices[params.id];
 				// TODO: Do we need more?
-				const ret = {
+				const ret: SendToDevice = {
 					name: device.name,
 					type: AccessoryTypes[device.type], // type as string
 				} as any;
@@ -222,4 +227,4 @@ export async function onMessage(obj) {
 				return;
 		}
 	}
-}
+};

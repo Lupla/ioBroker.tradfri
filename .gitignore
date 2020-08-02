@@ -263,9 +263,6 @@ __pycache__/
 # Visual Studio NodeJS Typings
 typings/
 
-# VSCode files
-.vscode/
-
 # Sourcemaps
 maps/
 
@@ -288,3 +285,9 @@ coverage
 
 # no clue why those are generated
 build/admin/**/*.d.ts
+
+# i18n intermediate files
+admin/i18n
+
+# Parcel cache
+.cache

@@ -1,31 +1,55 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
-import {$$, $window, _, instance} from "../lib/adapter";
+import { Tooltip } from "iobroker-react-components";
+import { _ } from "../lib/adapter";
 
-import Fragment from "../components/fragment";
-
-export type OnSettingsChangedCallback = (newSettings: DictionaryLike<any>, hasChanges: boolean) => void;
+export type OnSettingsChangedCallback = (newSettings: ioBroker.AdapterConfig) => void;
 
 interface SettingsProps {
 	onChange: OnSettingsChangedCallback;
-	settings: DictionaryLike<any>;
+	settings: ioBroker.AdapterConfig;
 }
 
-interface DictionaryLike<T> {
-	[key: string]: T;
+interface LabelProps {
+	for: string;
+	text: string;
+	class?: string[];
+	tooltip?: string;
 }
 
 /** Helper component for a settings label */
-function Label(props) {
-	return <label htmlFor={props.for} className={(props.class || []).join(" ")}>{_(props.text)} </label>;
-}
-/** Helper component for a tooltip */
-function Tooltip(props) {
-	return <img className="admin-tooltip-icon" src="../../img/info.png" title={_(props.text)} />;
+function Label(props: LabelProps) {
+	const classNames =
+		(props.class as string[] || [])
+		;
+	return (
+		<label htmlFor={props.for} className={classNames.join(" ")}>
+			{_(props.text)}
+			{props.tooltip != null && <Tooltip text={props.tooltip} />}
+		</label>
+	);
 }
 
-export class Settings extends React.Component<SettingsProps, DictionaryLike<any>> {
+interface CheckboxLabelProps {
+	text: string;
+	class?: string[];
+	tooltip?: string;
+}
+
+/** Inner label for a Materializes CSS checkbox (span, no for property) */
+function CheckboxLabel(props: CheckboxLabelProps) {
+	const classNames =
+		(props.class as string[] || [])
+		;
+	return (
+		<span className={classNames.join(" ")}>
+			{_(props.text)}
+			{props.tooltip != null && <Tooltip text={props.tooltip} />}
+		</span>
+	);
+}
+
+export class Settings extends React.Component<SettingsProps, ioBroker.AdapterConfig> {
 
 	constructor(props: SettingsProps) {
 		super(props);
@@ -33,68 +57,118 @@ export class Settings extends React.Component<SettingsProps, DictionaryLike<any>
 		this.state = {
 			...props.settings,
 		};
-		// remember the original settings
-		this.originalSettings = {...props.settings};
 
 		// setup change handlers
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	private onChange: OnSettingsChangedCallback;
-	private originalSettings: DictionaryLike<any>;
+	private chkPreserveTransitionTime: HTMLInputElement | null | undefined;
+	private chkDiscoverGateway: HTMLInputElement | null | undefined;
+
+	private parseChangedSetting(target: HTMLInputElement | HTMLSelectElement): ioBroker.AdapterConfig[keyof ioBroker.AdapterConfig] {
+		// Checkboxes in MaterializeCSS are messed up, so we attach our own handler
+		// However that one gets called before the underlying checkbox is actually updated,
+		// so we need to invert the checked value here
+		return target.type === "checkbox" ? !(target as any).checked
+			: target.type === "number" ? parseInt(target.value, 10)
+			: target.value
+		;
+	}
 
 	// gets called when the form elements are changed by the user
 	private handleChange(event: React.FormEvent<HTMLElement>) {
 		const target = event.target as (HTMLInputElement | HTMLSelectElement); // TODO: more types
+		const value = this.parseChangedSetting(target);
 
 		// store the setting
-		this.putSetting(target.id, target.value, () => {
+		this.putSetting(target.id as keyof ioBroker.AdapterConfig, value, () => {
 			// and notify the admin UI about changes
-			this.props.onChange(this.state, this.hasChanges());
+			this.props.onChange(this.state);
 		});
+
+		return false;
 	}
 
 	/**
 	 * Reads a setting from the state object and transforms the value into the correct format
 	 * @param key The setting key to lookup
 	 */
-	private getSetting(key: string): string | number | string[] {
-		return this.state[key] as any;
+	private getSetting<
+		TKey extends keyof ioBroker.AdapterConfig,
+		TSetting extends ioBroker.AdapterConfig[TKey] = ioBroker.AdapterConfig[TKey],
+	>(key: TKey, defaultValue?: TSetting): TSetting | undefined {
+		const ret = this.state[key] as TSetting;
+		return ret != undefined ? ret : defaultValue;
 	}
 	/**
 	 * Saves a setting in the state object and transforms the value into the correct format
 	 * @param key The setting key to store at
 	 */
-	private putSetting(key: string, value: string | number | string[], callback?: () => void): void {
-		this.setState({[key]: value as any}, callback);
+	private putSetting<
+		TKey extends keyof ioBroker.AdapterConfig,
+		TSetting extends ioBroker.AdapterConfig[TKey],
+	>(key: TKey, value: TSetting, callback?: () => void): void {
+		this.setState({ [key]: value } as unknown as Pick<ioBroker.AdapterConfig, TKey>, callback);
 	}
 
-	/**
-	 * Checks if any setting was changed
-	 */
-	private hasChanges(): boolean {
-		for (const key of Object.keys(this.originalSettings)) {
-			if (this.originalSettings[key] !== this.state[key]) return true;
+	public componentWillUnmount() {
+		for (const checkbox of [
+			this.chkPreserveTransitionTime,
+			this.chkDiscoverGateway,
+		]) {
+			if (checkbox) $(checkbox).off("click", this.handleChange as any);
 		}
-		return false;
 	}
 
-	public onSave(): any {
-		return this.state;
+	public componentDidMount() {
+		// update floating labels in materialize design
+		M.updateTextFields();
+		// Fix materialize checkboxes
+		for (const checkbox of [
+			this.chkPreserveTransitionTime,
+			this.chkDiscoverGateway,
+		]) {
+			if (checkbox) $(checkbox).on("click", this.handleChange as any);
+		}
 	}
 
 	public render() {
 		return (
-			<p key="content" className="settings-table">
-				<Label for="host" text="Gateway IP/Hostname:" />
-				<Tooltip text="hostname tooltip" />
-				<input className="value" id="host" value={this.getSetting("host")} onChange={this.handleChange} /><br />
-
-				<Label for="securityCode" text="Security-Code:" />
-				<Tooltip text="security code tooltip" />
-				<input className="value" id="securityCode" value={this.getSetting("securityCode")} onChange={this.handleChange}  />
-				<span>{_("code not stored")}</span>
-			</p>
+			<>
+				<div className="row">
+					<div className="col s2 input-field">
+						<input type="text" className="value" id="host" value={this.getSetting("host")} onChange={this.handleChange} />
+						<Label for="host" text="Gateway IP/Hostname:" tooltip="hostname tooltip" />
+					</div>
+					<div className="col s2 input-field">
+						<label htmlFor="discoverGateway">
+							<input type="checkbox" className="value" id="discoverGateway" defaultChecked={this.getSetting("discoverGateway")}
+								ref={me => this.chkDiscoverGateway = me}
+							/>
+							<CheckboxLabel text="Auto-discover" tooltip="discovery tooltip" />
+						</label>
+					</div>
+					<div className="col s4 input-field">
+						<input type="text" className="value" id="securityCode" value={this.getSetting("securityCode")} onChange={this.handleChange} />
+						<Label for="securityCode" text="Security-Code:" tooltip="security code tooltip" />
+					</div>
+				</div>
+				<div className="row">
+					<div className="col s4 input-field">
+						<label htmlFor="preserveTransitionTime">
+							<input type="checkbox" className="value" id="preserveTransitionTime" defaultChecked={this.getSetting("preserveTransitionTime")}
+								ref={me => this.chkPreserveTransitionTime = me}
+							/>
+							<CheckboxLabel text="Preserve transition time" tooltip="transition time tooltip" />
+						</label>
+					</div>
+					<div className="col s4 input-field">
+						<input type="number" min="0" max="2" className="value" id="roundToDigits" value={this.getSetting("roundToDigits", 2)} onChange={this.handleChange} />
+						<Label for="roundToDigits" text="Decimal places:" tooltip="roundto tooltip" />
+					</div>
+				</div>
+			</>
 		);
 	}
+
 }
